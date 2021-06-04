@@ -1,26 +1,76 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>Reaction Game</h1>
+  <button @click="renderBlock" :disabled="isPlaying">Play</button>
+  <Block v-if="isPlaying" :delay="delay" @end="setScore" />
+  <Results v-if="scoreAvail" :score="score" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Block from "./components/Block";
+import Results from "./components/Results";
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      isPlaying: false,
+      delay: null,
+      score: null,
+      scoreAvail: false,
+    };
+  },
+  methods: {
+    renderBlock() {
+      this.delay = 2000 + Math.random() * 5000;
+      this.isPlaying = true;
+      this.scoreAvail = false;
+    },
+    setScore(rectionTime) {
+      this.score = rectionTime;
+      this.isPlaying = false;
+      this.scoreAvail = true;
+    },
+  },
   components: {
-    HelloWorld
-  }
-}
+    Block,
+    Results,
+  },
+};
 </script>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #333;
+  margin-top: 2rem;
+}
+h1 {
+  margin: 2rem auto;
+}
+button {
+  background: #0faf87;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+}
+button:hover,
+button:active {
+  background: #027e5f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+}
+button:disabled {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
 }
 </style>
